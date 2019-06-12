@@ -58,17 +58,25 @@ namespace VendingMachine.Services
                         .OrderByDescending(x => x.Value).ToListAsync();
 
                     var sum = 0.0m;
-                    while (sum <= diff)
+                    var temp = 0.0m;
+                    while (sum != diff)
                     {
                         foreach (var coin in availabelCoins)
-                        {
-                            sum += coin.Value;
-                            if (sum <= diff)
-                            {
-                                returnings.Add(coin.Value, 1);
+                        {    
+                            temp += coin.Value; 
+                            if (temp <= diff)
+                            {                                
+                                if(returnings.ContainsKey(coin.Value))
+                                    returnings[coin.Value] += 1;
+                                else returnings.Add(coin.Value, 1);
                                 coin.Count -= 1;
                                 dbContext.Wallet.Update(coin);
-                            }
+                                sum += coin.Value;
+                            } else
+                            {
+                                temp -= coin.Value;
+                                continue;
+                            }                            
                         }
                     }
                     await dbContext.SaveChangesAsync();
