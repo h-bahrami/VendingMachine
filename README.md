@@ -5,11 +5,10 @@ A simple vending machine implemented in Asp.Net Core + React
 
 - Backend
   - Optimize algorithm
-  - Add more tests for purchase service 
-  - Use automapper 
-  - Dockerizing it
+  - Add more tests (specialy for VendingMachineService service) 
+  - Dockerizing it   
 - Improve UI
   - Add images and styles (beatification :))
   - Add spining icon while communicating with backend
-  - Refactor code to replace 
+  - Refactor code to replace some of foreach functions with map function
 
