@@ -4,6 +4,7 @@ A simple vending machine implemented in Asp.Net Core + React
 # Posssible improvments
 
 - Backend
+  - Refactor to optimize code and increase code quality 
   - Optimize algorithm
   - Add more tests (specialy for VendingMachineService service) 
   - Dockerizing it   
