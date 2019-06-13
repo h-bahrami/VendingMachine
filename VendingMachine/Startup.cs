@@ -28,16 +28,16 @@ namespace VendingMachine
 
             services.AddScoped<IVendingMachineService, VendingMachineService>();
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy("Test", policy =>
-                {
-                    policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
-                }
-                );
-            });
+            //services.AddCors(options =>
+            //{
+            //    options.AddPolicy("Test", policy =>
+            //    {
+            //        policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+            //    }
+            //    );
+            //});
 
-            services.AddMvc()
+            services.AddMvc(options => options.EnableEndpointRouting = false)
                 .AddNewtonsoftJson();
 
             // In production, the React files will be served from this directory
@@ -66,7 +66,7 @@ namespace VendingMachine
                 var context = serviceScope.ServiceProvider.GetService<VmDbContext>();
                 DataSeedingHelper.Seed(context);
             }
-            app.UseCors("Test");
+            //app.UseCors("Test");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
