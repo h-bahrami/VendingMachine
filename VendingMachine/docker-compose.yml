@@ -1,8 +1,0 @@
-﻿version: '3.4'
-
-services:
-  Vending.Machine:
-    image: vendingmachine
-    ports:
-      - "44307:80"
-      - "44308:443"    
