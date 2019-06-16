@@ -23,14 +23,16 @@ namespace VendingMachine.Controllers
         public async Task<IActionResult> Products()
         {
             var products = await service.GetProductsAsync();
-            return Ok(products.Select(x => new { x.Name, x.Portions, x.Price, x.Id }));
+            var models = products.Select(x => new { x.Name, x.Portions, x.Price, x.Id }).ToList();
+            return Ok(models);
         }
 
         [HttpGet("[action]")]
         public async Task<IActionResult> AcceptedCoins()
         {
             var coins = await service.GetAcceptedCoinsAsync();
-            return Ok(coins.Select(x => new { x.Value }));
+            var models = coins.Select(x => new { x.Value }).ToList();
+            return Ok(models);
         }
 
         [HttpPost("[action]")]

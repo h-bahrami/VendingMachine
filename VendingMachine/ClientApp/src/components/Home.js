@@ -185,6 +185,6 @@ export class Home extends Component {
                 let coins = await values[1].json();
 
                 this.setState({ products, coins, selectedProduct: null, selectedCoins: [] });
-            });
+            }).catch(reason => console.log(reason));
     }   
 }

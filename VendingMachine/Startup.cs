@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.IO;
 using VendingMachine.Data;
 using VendingMachine.Services;
 
@@ -28,17 +29,19 @@ namespace VendingMachine
 
             services.AddScoped<IVendingMachineService, VendingMachineService>();
 
-            //services.AddCors(options =>
-            //{
-            //    options.AddPolicy("Test", policy =>
-            //    {
-            //        policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
-            //    }
-            //    );
-            //});
+            services.AddCors(options =>
+            {
+                options.AddPolicy("Test", policy =>
+                {
+                    policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                }
+                );
+            });
 
-            services.AddMvc(options => options.EnableEndpointRouting = false)
-                .AddNewtonsoftJson();
+            services.AddMvc(options => options.EnableEndpointRouting = false);
+                //.AddNewtonsoftJson(setupAction => {
+                //    setupAction.
+                //});
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -66,7 +69,7 @@ namespace VendingMachine
                 var context = serviceScope.ServiceProvider.GetService<VmDbContext>();
                 DataSeedingHelper.Seed(context);
             }
-            //app.UseCors("Test");
+            app.UseCors("Test");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -82,7 +85,8 @@ namespace VendingMachine
 
             app.UseSpa(spa =>
             {
-                spa.Options.SourcePath = "ClientApp";
+                //spa.Options.SourcePath = "ClientApp";
+                spa.Options.SourcePath = Path.Join(env.ContentRootPath, "ClientApp");
 
                 if (env.IsDevelopment())
                 {

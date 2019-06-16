@@ -1,10 +1,13 @@
-FROM node:10-alpine AS build-node
-WORKDIR /src/VendingMachine/ClientApp
+# docker exec -i -t e9a51f0ed5ba /bin/bash
+FROM node AS build-node
+WORKDIR /ClientApp
 COPY VendingMachine/ClientApp/package.json .
 COPY VendingMachine/ClientApp/package-lock.json .
 RUN npm install
+# ENV PATH /usr/src/app/node_modules/.bin:$PATH
 COPY VendingMachine/ClientApp/ .
 RUN npm run build
+
 
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.0-buster-slim AS base
 WORKDIR /app
@@ -12,6 +15,14 @@ EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster AS build
+
+#RUN curl -sL https://deb.nodesource.com/setup_10.x |  bash -
+#RUN apt-get install -y nodejs
+#RUN apt update
+#RUN apt install -y npm
+#RUN npm --version
+#RUN which npm 
+
 WORKDIR /src
 COPY ["VendingMachine/VendingMachine.csproj", "VendingMachine/"]
 COPY ["VendingMachine.Services/VendingMachine.Services.csproj", "VendingMachine.Services/"]
@@ -27,4 +38,7 @@ RUN dotnet publish "VendingMachine.csproj" -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
+
+COPY --from=build-node /ClientApp/build ./ClientApp/build
+
 ENTRYPOINT ["dotnet", "VendingMachine.dll"]
