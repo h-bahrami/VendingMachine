@@ -38,10 +38,8 @@ namespace VendingMachine
                 );
             });
 
-            services.AddMvc(options => options.EnableEndpointRouting = false);
-                //.AddNewtonsoftJson(setupAction => {
-                //    setupAction.
-                //});
+            services.AddMvc(options => options.EnableEndpointRouting = false)
+                .AddNewtonsoftJson();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

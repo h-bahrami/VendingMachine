@@ -1,10 +1,8 @@
-# docker exec -i -t e9a51f0ed5ba /bin/bash
 FROM node AS build-node
 WORKDIR /ClientApp
 COPY VendingMachine/ClientApp/package.json .
 COPY VendingMachine/ClientApp/package-lock.json .
 RUN npm install
-# ENV PATH /usr/src/app/node_modules/.bin:$PATH
 COPY VendingMachine/ClientApp/ .
 RUN npm run build
 
@@ -15,13 +13,6 @@ EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster AS build
-
-#RUN curl -sL https://deb.nodesource.com/setup_10.x |  bash -
-#RUN apt-get install -y nodejs
-#RUN apt update
-#RUN apt install -y npm
-#RUN npm --version
-#RUN which npm 
 
 WORKDIR /src
 COPY ["VendingMachine/VendingMachine.csproj", "VendingMachine/"]
